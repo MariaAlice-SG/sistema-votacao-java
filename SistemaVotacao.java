@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 
 public class SistemaVotacao {
@@ -8,6 +7,7 @@ public class SistemaVotacao {
     static final int MAX_VOTANTES_POR_TURMA = 10;
 
     static Scanner scanner = new Scanner(System.in);
+
     static int[] numerosCandidatos = new int[MAX_CANDIDATOS];
     static String[] nomesCandidatos = new String[MAX_CANDIDATOS];
     static int[] votosCandidatos = new int[MAX_CANDIDATOS];
@@ -15,14 +15,31 @@ public class SistemaVotacao {
     static int[][] votosPorTurma =
             new int[TOTAL_TURMAS][MAX_VOTANTES_POR_TURMA];
 
-    static int[] quantidadeVotosTurma =
-            new int[TOTAL_TURMAS];
+    static int[] quantidadeVotosTurma = new int[TOTAL_TURMAS];
 
     static int quantidadeCandidatos = 0;
 
 
+    // ETAPA 5 - Coloque aqui
+    static int lerInteiro(String mensagem) {
+        while (true) {
+            System.out.print(mensagem);
+
+            if (scanner.hasNextInt()) {
+                int valor = scanner.nextInt();
+                scanner.nextLine();
+                return valor;
+            }
+
+            System.out.println("Entrada inválida. Digite um número.");
+            scanner.nextLine();
+        }
+    }
+
+
+    // MAIN
     public static void main(String[] args) {
-        System.out.println("Sistema de votação iniciado.");
+
         int opcao;
 
         do {
@@ -33,8 +50,8 @@ public class SistemaVotacao {
             System.out.println("4 - Exibir matriz de votos");
             System.out.println("5 - Sair");
 
-            System.out.print("Opção: ");
-            opcao = scanner.nextInt();
+            // Use o método da Etapa 5 aqui
+            opcao = lerInteiro("Opção: ");
 
             switch (opcao) {
 
