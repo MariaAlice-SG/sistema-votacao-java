@@ -56,7 +56,7 @@ public class SistemaVotacao {
 
         int quantidade;
 
-        // ETAPA 6 - Validação da quantidade
+        // Validação da quantidade
         do {
 
             quantidade = lerInteiro(
@@ -139,7 +139,7 @@ public class SistemaVotacao {
     }
 
 
-    // ETAPA 9 - Buscar candidato pelo número
+    // ETAPA 9 - Buscar candidato
     static int buscarCandidato(int numero) {
 
         int indiceEncontrado = -1;
@@ -156,7 +156,7 @@ public class SistemaVotacao {
     }
 
 
-    // ETAPA 10 - Mostrar candidatos disponíveis
+    // ETAPA 10 - Mostrar candidatos
     static void mostrarCandidatos() {
 
         System.out.println("\nCandidatos disponíveis:");
@@ -166,6 +166,129 @@ public class SistemaVotacao {
             System.out.println(
                     numerosCandidatos[i] + " - " + nomesCandidatos[i]
             );
+        }
+    }
+
+
+    // ETAPA 11 - Escolher turma
+    static int escolherTurma() {
+
+        int turma;
+
+        do {
+
+            turma = lerInteiro("Informe a turma de 1 a 3: ");
+
+            if (turma < 1 || turma > TOTAL_TURMAS) {
+                System.out.println("Turma inválida.");
+            }
+
+        } while (turma < 1 || turma > TOTAL_TURMAS);
+
+        int indiceTurma = turma - 1;
+
+        return indiceTurma;
+    }
+
+
+    // ETAPA 12 - Iniciar votação
+    static void iniciarVotacao() {
+
+        if (quantidadeCandidatos == 0) {
+            System.out.println(
+                    "Cadastre os candidatos antes de iniciar a votação."
+            );
+            return;
+        }
+
+        int indiceTurma = escolherTurma();
+
+        if (quantidadeVotosTurma[indiceTurma]
+                >= MAX_VOTANTES_POR_TURMA) {
+
+            System.out.println(
+                    "Essa turma já atingiu o limite de votantes."
+            );
+            return;
+        }
+
+        mostrarCandidatos();
+
+        System.out.println(
+                "\nDigite 0 para encerrar a votação desta turma."
+        );
+
+        while (quantidadeVotosTurma[indiceTurma]
+                < MAX_VOTANTES_POR_TURMA) {
+
+            int numero = lerInteiro(
+                    "\nNúmero do candidato: "
+            );
+
+            if (numero == 0) {
+                System.out.println("Votação encerrada.");
+                break;
+            }
+
+            int indiceCandidato = buscarCandidato(numero);
+
+            if (indiceCandidato == -1) {
+                System.out.println(
+                        "Candidato inexistente. Tente novamente."
+                );
+                continue;
+            }
+
+            int posicaoVoto =
+                    quantidadeVotosTurma[indiceTurma];
+
+            votosPorTurma[indiceTurma][posicaoVoto] = numero;
+
+            quantidadeVotosTurma[indiceTurma]++;
+
+            votosCandidatos[indiceCandidato]++;
+
+            System.out.println(
+                    "Voto registrado com sucesso."
+            );
+        }
+
+        if (quantidadeVotosTurma[indiceTurma]
+                == MAX_VOTANTES_POR_TURMA) {
+
+            System.out.println(
+                    "Limite de 10 votantes atingido."
+            );
+        }
+    }
+
+
+    // ETAPA 13 - Exibir matriz de votos
+    static void exibirMatrizVotos() {
+
+        System.out.println("\n===== MATRIZ DE VOTOS =====");
+
+        // Percorre as turmas
+        for (int i = 0; i < TOTAL_TURMAS; i++) {
+
+            System.out.print("Turma " + (i + 1) + ": ");
+
+            // Percorre os votantes
+            for (int j = 0; j < MAX_VOTANTES_POR_TURMA; j++) {
+
+                if (j < quantidadeVotosTurma[i]) {
+
+                    System.out.print(
+                            votosPorTurma[i][j] + " "
+                    );
+
+                } else {
+
+                    System.out.print("- ");
+                }
+            }
+
+            System.out.println();
         }
     }
 
@@ -193,7 +316,7 @@ public class SistemaVotacao {
                     break;
 
                 case 2:
-                    System.out.println("Votação selecionada.");
+                    iniciarVotacao();
                     break;
 
                 case 3:
@@ -201,7 +324,7 @@ public class SistemaVotacao {
                     break;
 
                 case 4:
-                    System.out.println("Matriz selecionada.");
+                    exibirMatrizVotos();
                     break;
 
                 case 5:
