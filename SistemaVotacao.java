@@ -23,8 +23,9 @@ public class SistemaVotacao {
     static int[] quantidadeVotosTurma =
             new int[TOTAL_TURMAS];
 
-    // Quantidade de candidatos cadastrados
+    // Quantidade de candidatos
     static int quantidadeCandidatos = 0;
+
 
     // ETAPA 5 - Leitura segura de números
     static int lerInteiro(String mensagem) {
@@ -44,10 +45,10 @@ public class SistemaVotacao {
         }
     }
 
-    // ETAPAS 6 e 7 - Cadastro de candidatos
+
+    // ETAPAS 6, 7 e 8 - Cadastro de candidatos
     static void cadastrarCandidatos() {
 
-        // Impede cadastrar novamente
         if (quantidadeCandidatos > 0) {
             System.out.println("Os candidatos já foram cadastrados.");
             return;
@@ -55,7 +56,7 @@ public class SistemaVotacao {
 
         int quantidade;
 
-        // Validação da quantidade de candidatos
+        // ETAPA 6 - Validação da quantidade
         do {
 
             quantidade = lerInteiro(
@@ -69,18 +70,18 @@ public class SistemaVotacao {
         } while (quantidade < 1 || quantidade > MAX_CANDIDATOS);
 
 
-        // ETAPA 7 - Cadastro dos números dos candidatos
+        // Cadastro dos candidatos
         for (int i = 0; i < quantidade; i++) {
 
             int numero;
 
+            // ETAPA 7 - Validação do número
             while (true) {
 
                 numero = lerInteiro(
                         "\nNúmero do candidato " + (i + 1) + ": "
                 );
 
-                // O número precisa ser maior que zero
                 if (numero <= 0) {
                     System.out.println(
                             "O número deve ser maior que zero."
@@ -88,7 +89,6 @@ public class SistemaVotacao {
                     continue;
                 }
 
-                // Verifica se o número já existe
                 boolean numeroRepetido = false;
 
                 for (int j = 0; j < i; j++) {
@@ -99,7 +99,6 @@ public class SistemaVotacao {
                     }
                 }
 
-                // Se estiver repetido, pede novamente
                 if (numeroRepetido) {
                     System.out.println(
                             "Esse número já está cadastrado."
@@ -107,16 +106,71 @@ public class SistemaVotacao {
                     continue;
                 }
 
-                // Número válido
                 break;
             }
 
-            // Guarda o número do candidato
+
+            // ETAPA 8 - Nome do candidato
+            String nome;
+
+            do {
+
+                System.out.print("Nome do candidato: ");
+                nome = scanner.nextLine().trim();
+
+                if (nome.isEmpty()) {
+                    System.out.println(
+                            "O nome não pode ficar vazio."
+                    );
+                }
+
+            } while (nome.isEmpty());
+
+
+            // Armazena os dados
             numerosCandidatos[i] = numero;
+            nomesCandidatos[i] = nome;
+            votosCandidatos[i] = 0;
+
+            quantidadeCandidatos++;
+        }
+
+        System.out.println("\nCandidatos cadastrados com sucesso!");
+    }
+
+
+    // ETAPA 9 - Buscar candidato pelo número
+    static int buscarCandidato(int numero) {
+
+        int indiceEncontrado = -1;
+
+        for (int i = 0; i < quantidadeCandidatos; i++) {
+
+            if (numerosCandidatos[i] == numero) {
+                indiceEncontrado = i;
+                break;
+            }
+        }
+
+        return indiceEncontrado;
+    }
+
+
+    // ETAPA 10 - Mostrar candidatos disponíveis
+    static void mostrarCandidatos() {
+
+        System.out.println("\nCandidatos disponíveis:");
+
+        for (int i = 0; i < quantidadeCandidatos; i++) {
+
+            System.out.println(
+                    numerosCandidatos[i] + " - " + nomesCandidatos[i]
+            );
         }
     }
 
-    // PROGRAMA PRINCIPAL
+
+    // MAIN
     public static void main(String[] args) {
 
         int opcao;
